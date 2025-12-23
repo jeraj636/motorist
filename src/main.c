@@ -2,6 +2,8 @@
 #include <GLFW/glfw3.h>
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 #include "call_back.h"
 #include "interpolacija.h"
@@ -51,11 +53,34 @@ int main()
 
     glfwSetFramebufferSizeCallback(okno, velikost_okna_callback);
 
-    float tockice[] = {
-        0.0, 0.0,
-        100.0, 200.0,
-        100.0, 200.0,
-        300.0, 100.0};
+    int vel_tock = 20;
+    srand(time(NULL));
+    double tocke_za_interpolacijo[vel_tock][2];
+    for (int i = 0; i < vel_tock; i++)
+    {
+        tocke_za_interpolacijo[i][0] = i * 192 - 192 * 3;
+        tocke_za_interpolacijo[i][1] = (rand() % 150) + 100;
+        printf("%f  %f\n", tocke_za_interpolacijo[i][0], tocke_za_interpolacijo[i][1]);
+    }
+    float tockice[192 * 2 * 2];
+
+    tockice[0] = 0;
+    tockice[1] = f(tockice[0], tocke_za_interpolacijo, vel_tock);
+    tockice[2] = 10;
+    tockice[3] = f(tockice[2], tocke_za_interpolacijo, vel_tock);
+    for (int i = 4; i < 192 * 4; i += 4)
+    {
+        tockice[i] = tockice[i - 2];
+        tockice[i + 1] = tockice[i - 1];
+
+        tockice[i + 2] = tockice[i] + 10;
+        tockice[i + 3] = f(tockice[i + 2], tocke_za_interpolacijo, vel_tock);
+        if (tockice[i + 3] < 20)
+            tockice[i + 3] = 20;
+    }
+
+    for (int i = 0; i < 192 * 4; i += 2)
+        printf("%f   %f\n", tockice[i], tockice[i + 1]);
 
     float projekcija[3][3];
 
@@ -82,9 +107,9 @@ int main()
         orto3(projekcija, 0, 1920, 1080, 0);
 
         glUseProgram(program_za_crte);
-        glUniformMatrix3fv(glGetUniformLocation(program_za_crte, "projekcija"), 1, GL_FALSE, &projekcija[0][0]);
+        glUniformMatrix3fv(glGetUniformLocation(program_za_crte, "projekcija"), 1, GL_TRUE, &projekcija[0][0]);
 
-        glDrawArrays(GL_LINE_STRIP, 0, 4);
+        glDrawArrays(GL_LINES, 0, sizeof(tockice) / sizeof(float));
 
         glfwSwapBuffers(okno);
         glfwPollEvents();
