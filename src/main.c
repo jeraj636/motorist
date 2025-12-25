@@ -60,25 +60,13 @@ int main()
     double tocke_za_interpolacijo[vel_tock][2];
     for (int i = 0; i < vel_tock; i++)
     {
-        tocke_za_interpolacijo[i][0] = i * 192 - 192 * 4;
-        tocke_za_interpolacijo[i][1] = (rand() % 150) + 100;
+        tocke_za_interpolacijo[i][0] = i * 300 - 300 * 10;
+        tocke_za_interpolacijo[i][1] = (rand() % 200) + 50;
     }
-    float tockice[192 * 2 * 2];
-
-    tockice[0] = 0;
-    tockice[1] = f(tockice[0], tocke_za_interpolacijo, vel_tock);
-    tockice[2] = 10;
-    tockice[3] = f(tockice[2], tocke_za_interpolacijo, vel_tock);
-    for (int i = 4; i < 192 * 4; i += 4)
-    {
-        tockice[i] = tockice[i - 2];
-        tockice[i + 1] = tockice[i - 1];
-
-        tockice[i + 2] = tockice[i] + 10;
-        tockice[i + 3] = f(tockice[i + 2], tocke_za_interpolacijo, vel_tock);
-        if (tockice[i + 3] < 20)
-            tockice[i + 3] = 20;
-    }
+    float tockice[192 * 2 * 2 * 2];
+    float pozicija_igralca = 1920 / 2;
+    float lokalni_premik = 0;
+    nastavi_tocke(tockice, tocke_za_interpolacijo, vel_tock, 192 * 8, pozicija_igralca);
 
     float projekcija[3][3];
     float kamera[3][3];
@@ -98,7 +86,6 @@ int main()
     unsigned int program_za_crte = naredi_program(vertex_shader_crte_p, fragment_shader_crte_p);
 
     double zac_okna, delta_t;
-    float pozicija_igralca = -1920 / 2;
     kamera3(kamera, pozicija_igralca);
 
     while (!glfwWindowShouldClose(okno))
@@ -108,11 +95,17 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT);
         if (akcija[A_NAPREJ] != 0)
         {
-            premik(tockice, tocke_za_interpolacijo, 20, 192 * 4, 100 * delta_t);
             pozicija_igralca += 100 * delta_t;
-            kamera3(kamera, pozicija_igralca);
+            lokalni_premik += 100 * delta_t;
+            if (lokalni_premik >= 300)
+            {
+                lokalni_premik -= 300;
+                nova_tocka_interpolacije(tocke_za_interpolacijo, vel_tock, lokalni_premik);
+            }
+            nastavi_tocke(tockice, tocke_za_interpolacijo, vel_tock, 192 * 8, pozicija_igralca);
             glBufferData(GL_ARRAY_BUFFER, sizeof(tockice), tockice, GL_DYNAMIC_DRAW);
         }
+        kamera3(kamera, pozicija_igralca - 1920);
         // Risanje črt
         orto3(projekcija, 0, 1920, 1080, 0);
 
