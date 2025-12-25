@@ -55,13 +55,13 @@ int main()
     glfwSetFramebufferSizeCallback(okno, velikost_okna_callback);
     glfwSetKeyCallback(okno, pritisk_tipke);
 
-    int vel_tock = 20;
+    int vel_tock = 90;
     srand(time(NULL));
     double tocke_za_interpolacijo[vel_tock][2];
     for (int i = 0; i < vel_tock; i++)
     {
-        tocke_za_interpolacijo[i][0] = i * 300 - 300 * 10;
-        tocke_za_interpolacijo[i][1] = (rand() % 200) + 50;
+        tocke_za_interpolacijo[i][0] = i * 500 - 500 * 45;
+        tocke_za_interpolacijo[i][1] = nova_tocka();
     }
     float tockice[192 * 2 * 2 * 2];
     float pozicija_igralca = 1920 / 2;
@@ -95,11 +95,11 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT);
         if (akcija[A_NAPREJ] != 0)
         {
-            pozicija_igralca += 100 * delta_t;
-            lokalni_premik += 100 * delta_t;
-            if (lokalni_premik >= 300)
+            pozicija_igralca += 1000 * delta_t;
+            lokalni_premik += 1000 * delta_t;
+            if (lokalni_premik >= 500)
             {
-                lokalni_premik -= 300;
+                lokalni_premik -= 500;
                 nova_tocka_interpolacije(tocke_za_interpolacijo, vel_tock, lokalni_premik);
             }
             nastavi_tocke(tockice, tocke_za_interpolacijo, vel_tock, 192 * 8, pozicija_igralca);

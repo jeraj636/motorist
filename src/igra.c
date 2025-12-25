@@ -3,13 +3,21 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-
+float nova_tocka()
+{
+    return (rand() % 130) + 100;
+}
 void nova_tocka_interpolacije(double tocke_interpolacije[][2], int n, float delta)
 {
     double nove_tocke[n][2];
-    for (int i = 0; i < n - 1; i++)
+    for (int i = 0; i < 10; i++)
     {
-        nove_tocke[i][0] = tocke_interpolacije[i + 1][0] - delta;
+        nove_tocke[i][0] = tocke_interpolacije[i + 1][0] + delta;
+        nove_tocke[i][1] = -10000;
+    }
+    for (int i = 10; i < n - 1; i++)
+    {
+        nove_tocke[i][0] = tocke_interpolacije[i + 1][0] + delta;
         nove_tocke[i][1] = tocke_interpolacije[i + 1][1];
     }
 
@@ -18,8 +26,8 @@ void nova_tocka_interpolacije(double tocke_interpolacije[][2], int n, float delt
         tocke_interpolacije[i][0] = nove_tocke[i][0];
         tocke_interpolacije[i][1] = nove_tocke[i][1];
     }
-    tocke_interpolacije[n - 1][0] = tocke_interpolacije[n - 2][0] + 300;
-    tocke_interpolacije[n - 1][1] = (rand() % 200) + 50;
+    tocke_interpolacije[n - 1][0] = tocke_interpolacije[n - 2][0] + 500;
+    tocke_interpolacije[n - 1][1] = nova_tocka();
 }
 
 void premik(float tocke_funkcije[], double tocke_interpolacije[][2], int ni, int n, float delta)
