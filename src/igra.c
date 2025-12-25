@@ -10,12 +10,7 @@ float nova_tocka()
 void nova_tocka_interpolacije(double tocke_interpolacije[][2], int n, float delta)
 {
     double nove_tocke[n][2];
-    for (int i = 0; i < 10; i++)
-    {
-        nove_tocke[i][0] = tocke_interpolacije[i + 1][0] + delta;
-        nove_tocke[i][1] = -10000;
-    }
-    for (int i = 10; i < n - 1; i++)
+    for (int i = 0; i < n - 1; i++)
     {
         nove_tocke[i][0] = tocke_interpolacije[i + 1][0] + delta;
         nove_tocke[i][1] = tocke_interpolacije[i + 1][1];
