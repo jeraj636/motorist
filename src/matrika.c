@@ -1,4 +1,5 @@
 #include "matrika.h"
+#include <stdio.h>
 void enotska(float mat[][3])
 {
     for (int i = 0; i < 3; i++)
@@ -14,4 +15,10 @@ void orto3(float mat[][3], float levo, float desno, float gor, float dol)
     mat[1][1] = 2 / (gor - dol);
     mat[0][2] = -(desno + levo) / (desno - levo);
     mat[1][2] = -(gor + dol) / (gor - dol);
+}
+
+void kamera3(float mat[][3], float pozicija)
+{
+    enotska(mat);
+    mat[0][2] = -pozicija;
 }

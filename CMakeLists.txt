@@ -21,6 +21,7 @@ add_executable(${PROJECT_NAME}
     src/interpolacija.c
     src/matrika.c
     src/shaderji.c
+    src/igra.c
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC
