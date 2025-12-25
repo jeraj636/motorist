@@ -5,7 +5,7 @@
 #include <stdio.h>
 float nova_tocka()
 {
-    return (rand() % 130) + 100;
+    return (rand() % 160) + 100;
 }
 void nova_tocka_interpolacije(double tocke_interpolacije[][2], int n, float delta)
 {
