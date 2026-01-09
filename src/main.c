@@ -123,7 +123,7 @@ int main()
         zac_okna = glfwGetTime();
         glClearColor(0, 0, 0, 0);
         glClear(GL_COLOR_BUFFER_BIT);
-        if (akcija[A_NAPREJ] != 0)
+        if (akcija[A_NAPREJ] != 0 || 1)
         {
             hitrost += (pospesek + omejitve) * delta_t;
             zacatek = 0;
@@ -134,6 +134,8 @@ int main()
         }
         if (hitrost > 500)
             hitrost = 500 * hitrost / abs(hitrost);
+
+        hitrost = 2000;
         pozicija_igralca += hitrost * delta_t;
         lokalni_premik += hitrost * delta_t;
         while (lokalni_premik >= 500)
