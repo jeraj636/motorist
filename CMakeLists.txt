@@ -22,6 +22,7 @@ add_executable(${PROJECT_NAME}
     src/matrika.c
     src/shaderji.c
     src/igra.c
+    src/slicica.c
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC
